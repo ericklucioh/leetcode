@@ -9,6 +9,17 @@ from leetgo_py import *
 
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
+        len = len(nums)
+        for num in nums:
+            index = nums.index(num)
+            j = index +1
+            while True:
+                if num + nums[j + 1] == target:
+                    return [nums[index], nums[j]]
+                j = j +1
+                if j == len:
+                    break
+        return []
         
 
 # @lc code=end
