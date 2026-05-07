@@ -9,15 +9,15 @@ from leetgo_py import *
 
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        len = len(nums)
+        n = len(nums)
         for num in nums:
             index = nums.index(num)
             j = index +1
-            while True:
-                if num + nums[j + 1] == target:
-                    return [nums[index], nums[j]]
+            while j < n:
+                if num + nums[j] == target:
+                    return [index, j]
                 j = j +1
-                if j == len:
+                if j == n:
                     break
         return []
         
