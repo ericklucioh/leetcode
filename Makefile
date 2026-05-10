@@ -81,7 +81,11 @@ pick:
 	$(LEETGO) -l $(CODE_LANG) pick $(ID)
 
 test-local:
-	$(LEETGO) -l $(CODE_LANG) test $(ID) -L
+	@if [ "$(CODE_LANG)" = "go" ]; then \
+		$(MAKE) --no-print-directory test-local-go ID=$(ID); \
+	else \
+		$(LEETGO) -l $(CODE_LANG) test $(ID) -L; \
+	fi
 
 test-remote:
 	$(LEETGO) -l $(CODE_LANG) test $(ID)
@@ -120,7 +124,7 @@ pick-rust:
 	$(call leetgo_pick,rust)
 
 test-local-go:
-	$(call leetgo_test_local,go)
+	bash scripts/test-local-go.sh $(ID)
 
 test-local-python:
 	$(call leetgo_test_local,python3)

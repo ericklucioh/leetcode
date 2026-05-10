@@ -8,14 +8,17 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-
+	"strconv"
 	. "github.com/j178/leetgo/testutils/go"
 )
 
 // @lc code=begin
 
 func isPalindrome(x int) bool {
-    
+    strings := strconv.Itoa(x)
+	fmt.Println(strings)
+	
+	return false
 }
 
 // @lc code=end

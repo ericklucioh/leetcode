@@ -17,7 +17,6 @@ O `leetgo` é a ferramenta Go mais completa que encontrei para esse fluxo. Ele:
 
 - gera o esqueleto da solução;
 - baixa enunciado e casos de teste;
-- roda teste local com o binário gerado;
 - integra com cookies da sua conta LeetCode para buscar problemas e submeter respostas.
 
 Existem outras opções em Go para resolver problemas do LeetCode, mas elas costumam ser bibliotecas menores de utilitários ou repositórios de soluções. Para o fluxo de praticar localmente, gerar arquivos e testar, o `leetgo` é a peça central deste setup.
@@ -115,14 +114,21 @@ Você também pode usar slug ou data, por exemplo `two-sum` ou `today`.
 ### Testar localmente
 
 ```bash
-leetgo test last -L
+make test-local
 ```
 
 Esse é o teste local/offline:
 
 - usa o `testcases.txt` gerado no projeto;
 - compila e executa o código localmente;
+- não lê cookies do navegador;
 - não depende de submeter na LeetCode.
+
+Se quiser chamar direto:
+
+```bash
+bash scripts/test-local-go.sh last
+```
 
 ### Testar com comportamento remoto
 
