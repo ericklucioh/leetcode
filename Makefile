@@ -93,13 +93,13 @@ test-remote:
 	$(LEETGO_REMOTE) -l $(CODE_LANG) test $(ID)
 
 submit:
-	$(LEETGO) -l $(CODE_LANG) submit $(ID)
+	$(LEETGO_REMOTE) -l $(CODE_LANG) submit $(ID)
 
 edit:
-	$(LEETGO) -l $(CODE_LANG) edit $(ID)
+	$(LEETGO_REMOTE) -l $(CODE_LANG) edit $(ID)
 
 open:
-	$(LEETGO) -l $(CODE_LANG) open $(ID)
+	$(LEETGO_REMOTE) -l $(CODE_LANG) open $(ID)
 
 init-go:
 	$(call leetgo_init,go)

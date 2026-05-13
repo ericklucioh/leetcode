@@ -1,6 +1,6 @@
 # LeetCode em Go com `leetgo`
 
-Workspace local para resolver problemas do LeetCode em Go usando [`leetgo`](https://github.com/j178/leetgo).
+Workspace local para resolver problemas do LeetCode em Go usando [`leetgo`](https://github.com/j178/leetgo) e um fork local com suporte offline.
 
 ## Estrutura
 
@@ -26,7 +26,7 @@ Existem outras opções em Go para resolver problemas do LeetCode, mas elas cost
 O `leetgo` funciona com várias linguagens, mas existe uma diferença importante entre:
 
 - gerar código/template para a linguagem;
-- rodar teste local com `-L`.
+- rodar teste local/offline com `-O`.
 
 Em geral, as linguagens mais interessantes para esse fluxo são:
 
@@ -106,7 +106,7 @@ Isso cria/atualiza a configuração local e prepara o diretório do projeto.
 ### Pegar um problema
 
 ```bash
-leetgo pick 1
+make pick ID=1
 ```
 
 Você também pode usar slug ou data, por exemplo `two-sum` ou `today`.
@@ -121,13 +121,13 @@ Esse é o teste local/offline:
 
 - usa o `testcases.txt` gerado no projeto;
 - compila e executa o código localmente;
-- não lê cookies do navegador;
-- não depende de submeter na LeetCode.
+- não depende de buscar a questão na LeetCode;
+- usa o cache offline gerado pelo `pick` no fork local.
 
-Se quiser chamar direto:
+Se quiser chamar direto com o fork local:
 
 ```bash
-bash scripts/test-local-go.sh last
+leetgofork -l go test -O last
 ```
 
 ### Testar com comportamento remoto
@@ -136,7 +136,7 @@ bash scripts/test-local-go.sh last
 leetgo test last
 ```
 
-Sem `-L`, o `leetgo` pode buscar o resultado esperado na LeetCode usando a autenticação configurada.
+Sem `-O`, o `leetgo` pode buscar o resultado esperado na LeetCode usando a autenticação configurada.
 
 ### Submeter
 
@@ -208,8 +208,8 @@ Os alvos por linguagem seguem o mesmo padrão:
 
 - `init-<lang>` cria o workspace com a linguagem escolhida;
 - `pick-<lang>` gera um problema para aquela linguagem;
-- `test-local-<lang>` roda o caso local com `-L`;
-- `test-remote-<lang>` roda o teste sem `-L`;
+- `test-local-<lang>` roda o caso local/offline com `-O`;
+- `test-remote-<lang>` roda o teste sem `-O`;
 - `submit-<lang>` submete a solução;
 - `edit-<lang>` abre a solução;
 - `open-<lang>` abre a página do problema.
@@ -221,4 +221,4 @@ Para este repo, as linguagens mais úteis continuam sendo:
 - C++
 - Rust
 
-Observação: `test-local-<lang>` só funciona de forma completa nas linguagens que o `leetgo` suporta para teste local. Se a linguagem não tiver suporte local, use `test-remote-<lang>`.
+Observação: `test-local-<lang>` depende do cache offline gerado pelo `pick` no fork local. Se faltar metadata local, rode `pick` de novo.
