@@ -1,6 +1,8 @@
 .DEFAULT_GOAL := help
 
-LEETGO ?= $(shell go env GOPATH)/bin/leetgo
+LEETGO_REMOTE ?= leetgo
+LEETGO_LOCAL ?= leetgofork
+OFFLINE_TEST_FLAG ?= -O
 SITE ?= us
 CODE_LANG ?= go
 ID ?= last
@@ -15,31 +17,31 @@ ID ?= last
 	open-go open-python open-cpp open-rust
 
 define leetgo_init
-	$(LEETGO) init -t $(SITE) -l $(1)
+	$(LEETGO_REMOTE) init -t $(SITE) -l $(1)
 endef
 
 define leetgo_pick
-	$(LEETGO) -l $(1) pick $(ID)
+	$(LEETGO_LOCAL) -l $(1) pick $(ID)
 endef
 
 define leetgo_test_local
-	$(LEETGO) -l $(1) test $(ID) -L
+	$(LEETGO_LOCAL) -l $(1) test $(OFFLINE_TEST_FLAG) $(ID)
 endef
 
 define leetgo_test_remote
-	$(LEETGO) -l $(1) test $(ID)
+	$(LEETGO_REMOTE) -l $(1) test $(ID)
 endef
 
 define leetgo_submit
-	$(LEETGO) -l $(1) submit $(ID)
+	$(LEETGO_REMOTE) -l $(1) submit $(ID)
 endef
 
 define leetgo_edit
-	$(LEETGO) -l $(1) edit $(ID)
+	$(LEETGO_REMOTE) -l $(1) edit $(ID)
 endef
 
 define leetgo_open
-	$(LEETGO) -l $(1) open $(ID)
+	$(LEETGO_REMOTE) -l $(1) open $(ID)
 endef
 
 help:
@@ -49,7 +51,7 @@ help:
 	@printf '%s\n' "  make setup               Instala o leetgo via go install"
 	@printf '%s\n' "  make init                Inicializa o workspace ($(SITE), $(CODE_LANG))"
 	@printf '%s\n' "  make pick ID=1           Gera um problema pelo id/slug/data"
-	@printf '%s\n' "  make test-local          Roda o teste local com -L"
+	@printf '%s\n' "  make test-local          Roda o teste local/offline com -O"
 	@printf '%s\n' "  make test-remote         Roda o teste sem -L"
 	@printf '%s\n' "  make submit              Submete a ultima solucao"
 	@printf '%s\n' "  make edit                Abre a ultima solucao"
@@ -66,7 +68,7 @@ help:
 	@printf '%s\n' "  make pick-rust ID=1      Pega problema com Rust"
 	@printf '%s\n' ""
 	@printf '%s\n' "Vars:"
-	@printf '%s\n' "  SITE=us CODE_LANG=go ID=last"
+	@printf '%s\n' "  SITE=us CODE_LANG=go ID=last LEETGO_REMOTE=leetgo LEETGO_LOCAL=leetgofork"
 
 setup:
 	go install github.com/j178/leetgo@latest
@@ -75,20 +77,20 @@ setup:
 	@printf '%s\n' 'export PATH="$$(go env GOPATH)/bin:$$PATH"'
 
 init:
-	$(LEETGO) init -t $(SITE) -l $(CODE_LANG)
+	$(LEETGO_REMOTE) init -t $(SITE) -l $(CODE_LANG)
 
 pick:
-	$(LEETGO) -l $(CODE_LANG) pick $(ID)
+	$(LEETGO_LOCAL) -l $(CODE_LANG) pick $(ID)
 
 test-local:
 	@if [ "$(CODE_LANG)" = "go" ]; then \
 		$(MAKE) --no-print-directory test-local-go ID=$(ID); \
 	else \
-		$(LEETGO) -l $(CODE_LANG) test $(ID) -L; \
+		$(LEETGO_LOCAL) -l $(CODE_LANG) test $(OFFLINE_TEST_FLAG) $(ID); \
 	fi
 
 test-remote:
-	$(LEETGO) -l $(CODE_LANG) test $(ID)
+	$(LEETGO_REMOTE) -l $(CODE_LANG) test $(ID)
 
 submit:
 	$(LEETGO) -l $(CODE_LANG) submit $(ID)
@@ -124,7 +126,7 @@ pick-rust:
 	$(call leetgo_pick,rust)
 
 test-local-go:
-	bash scripts/test-local-go.sh $(ID)
+	$(call leetgo_test_local,go)
 
 test-local-python:
 	$(call leetgo_test_local,python3)
