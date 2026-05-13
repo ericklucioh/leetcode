@@ -1,0 +1,16 @@
+# Python / uv
+.venv/
+python/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Local editor / tooling
+.vscode/
+.idea/
+
+# General OS cruft
+.DS_Store
+Thumbs.db
